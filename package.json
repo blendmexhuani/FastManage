@@ -1,0 +1,51 @@
+{
+  "name": "product-management-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "antd": "^3.13.2",
+    "apollo-boost": "^0.1.28",
+    "apollo-client": "^2.4.13",
+    "babel-plugin-import": "^1.11.0",
+    "bcryptjs": "2.4.3",
+    "emotion": "^10.0.7",
+    "git": "^0.1.5",
+    "github": "^14.0.0",
+    "graphql": "^14.1.1",
+    "graphql-yoga": "1.17.4",
+    "jsonwebtoken": "8.4.0",
+    "moment": "^2.24.0",
+    "prisma-client-lib": "1.26.6",
+    "react": "^16.8.2",
+    "react-apollo": "^2.4.1",
+    "react-dom": "^16.8.2",
+    "react-emotion": "^10.0.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "playground": "graphql playground",
+    "dev": "npm-run-all --parallel start playground"
+  },
+  "devDependencies": {
+    "dotenv": "6.2.0",
+    "graphql-cli": "2.15.9",
+    "nodemon": "1.18.10",
+    "npm-run-all": "4.1.2",
+    "prisma": "1.22.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

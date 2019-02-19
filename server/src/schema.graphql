@@ -1,0 +1,77 @@
+scalar DateTime
+type Query {
+  user(id: ID): User
+  product(id: ID): Product
+  products: [Product]
+  users: [User]
+}
+
+type Mutation {
+  signup(email: String!, password: String!, username: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  createProduct(data: ProductCreateInput!): Product
+  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+}
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+}
+
+
+type Product {
+  id: ID!
+  name: String!
+  description: String!
+  imageUrl: String!
+  quantity: Int!
+  basePrice: Float!
+  taxRate: Float!
+  salePrice: Float!
+  specialDiscount: Float
+  creator: User
+  timestamps: DateTime!
+  isDeleted: Boolean!
+}
+
+input ProductCreateInput {
+  name: String!
+  description: String!
+  imageUrl: String!
+  quantity: Int!
+  basePrice: Float!
+  taxRate: Float!
+  salePrice: Float!
+  specialDiscount: Float
+  creator: UserCreateOneInput!
+  timestamps: DateTime!
+  isDeleted: Boolean!
+}
+input ProductWhereUniqueInput {
+  id: ID
+}
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
+
+type AuthPayload {
+  token: String!
+  user: User
+}
+input ProductUpdateInput {
+  name: String
+  description: String
+  imageUrl: String
+  quantity: Int
+  basePrice: Float
+  taxRate: Float
+  salePrice: Float
+  specialDiscount: Float
+  timestamps: DateTime
+  isDeleted: Boolean
+}
+input UserCreateOneInput {
+  connect: UserWhereUniqueInput
+}

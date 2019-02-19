@@ -1,0 +1,89 @@
+mutation{
+  user3 : createUser(data:{
+    username: "blend_m"
+    email: "blendmexhuani@hotmail.com"
+    password: "$2a$10$i6rAyDiiYAEc8xSqWEweJ.ONc7or.eZHBBkpv/4xaZUTYZ2vdKGZi"
+  }){
+    id
+  }
+  
+  product1 : createProduct(data:{
+    name: "PS4"
+    description: "Playstation 4 with 500 HDD, Black"
+    imageUrl: "61cZ+Aiiz0L._SX679_.jpg"
+    quantity: 10
+    basePrice: 300
+    taxRate: 12
+    salePrice: 264
+    specialDiscount: 0
+    creator: {
+      connect: {
+        email: "blendmexhuani@hotmail.com"
+      }
+    }
+    timestamps: "2017-11-25T04:44:29Z"
+    isDeleted: false
+  }){
+    id
+  }
+    
+  product2 : createProduct(data:{
+    name: "Macbook Pro"
+    description: "Apple MacBook Pro 13, 2,3 GHz, 128 GB, Silver"
+    imageUrl: "mbp13touch-space-select-201807.jpg"
+    quantity: 3
+    basePrice: 1406.50
+    taxRate: 8
+    salePrice: 1293.98
+    specialDiscount: 0
+    creator: {
+      connect: {
+        email: "blendmexhuani@hotmail.com"
+      }
+    }
+    timestamps: "2017-11-22T04:54:39Z"
+    isDeleted: false
+  }){
+    id
+  }
+
+  product3 : createProduct(data:{
+    name: "Samsung Galaxy S9+"
+    description: "4GB RAM, 64GB Memory, Exynos 9810 (4x2.7 GHz/4x1.9 GHz), Black"
+    imageUrl: "samsung-g965-galaxy-s9-4g-64gb-midnight-black-eu.jpg"
+    quantity: 2
+    basePrice: 996.50
+    taxRate: 0
+    salePrice: 797.2
+    specialDiscount: 20
+    creator: {
+      connect: {
+        email: "blendmexhuani@hotmail.com"
+      }
+    }
+    timestamps: "2018-10-10T14:12:00Z"
+    isDeleted: false
+  }){
+    id
+  }
+  
+  product4 : createProduct(data:{
+    name: "Notebook HP Folio G1 12.5''"
+    description: "i7 Gen6, 8GB RAM, 256 SSD, Silver"
+    imageUrl: "HP Folio G1.jpg"
+    quantity: 2
+    basePrice: 1913.50
+    taxRate: 18
+    salePrice: 1569.07
+    specialDiscount: 0
+    creator: {
+      connect: {
+        email: "blendmexhuani@hotmail.com"
+      }
+    }
+    timestamps: "2018-11-10T14:12:00Z"
+    isDeleted: false
+  }){
+    id
+  }
+}
