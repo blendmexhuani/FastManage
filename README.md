@@ -9,7 +9,7 @@ Installs the required packages in order for the client/server projects to run.
 
 ### `prisma deploy`
 
-Deploys model and schema into Postgresql database.
+If you go to \server directory and run this command, it will deploys model and schema into Postgresql database.
 
 ### `prisma reset`
 
