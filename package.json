@@ -9,8 +9,6 @@
     "babel-plugin-import": "^1.11.0",
     "bcryptjs": "2.4.3",
     "emotion": "^10.0.7",
-    "git": "^0.1.5",
-    "github": "^14.0.0",
     "graphql": "^14.1.1",
     "graphql-yoga": "1.17.4",
     "jsonwebtoken": "8.4.0",
