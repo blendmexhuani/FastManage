@@ -109,10 +109,9 @@ class AddProduct extends Component {
 
     render() {
 
-        var discount = (this.state.basePrice * (this.state.specialDiscount/100)) > 0 ? 
-            (this.state.basePrice * (this.state.specialDiscount/100)) : 0;
-        var tax = discount == 0 ? (this.state.taxRate/100) : (discount * (this.state.taxRate/100));
-        var sPrice=this.state.basePrice-discount-tax;
+        var tax = (this.state.basePrice * (this.state.taxRate/100)) > 0 ? 
+            (this.state.basePrice * (this.state.taxRate/100)) : 0;
+        var sPrice = (this.state.basePrice + tax) - ((this.state.basePrice + tax) * (this.state.specialDiscount/100));
         
         return (
             <Form className="login-form addProduct">
