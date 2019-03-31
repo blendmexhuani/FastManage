@@ -45,9 +45,13 @@ app.post("/upload", type, function (req,res) {
   const tmp_path = req.file.path;
   const date = Date.now();
   const target_path = path.join(__dirname, "../../src/images/") + date + req.file.originalname;
-  const src = fs.createReadStream(tmp_path);
-  const dest = fs.createWriteStream(target_path);
-  src.pipe(dest);
-  src.on('end', function() { res.send('File Uploaded/' + date + req.file.originalname) });
-  src.on('error', function(err) { res.send(err); });
+  fs.copyFile(tmp_path, target_path, (err) => {
+    if (err) throw err;
+    console.log(`File was copied to ${target_path}`);
+    fs.unlink(tmp_path, (err) => {
+      if (err) throw err;
+      console.log(`File: ${tmp_path} was deleted`);
+    });
+    res.send('File Uploaded/' + date + req.file.originalname);
+  });
 });
