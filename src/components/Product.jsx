@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { graphql, compose } from 'react-apollo';
 import  { gql } from 'apollo-boost';
 import * as moment from 'moment';
+import axios from 'axios';
 
 const confirm = Modal.confirm;
 
@@ -48,14 +49,10 @@ function showDeleteConfirm(props) {
     });
   }
 
-function importAll(r) {
-    return r.keys().map(r);
-}
-  
+function importAll(r) { return r.keys().map(r); }
 const images = importAll(require.context('../images', false, /\.(png|jpe?g|svg)$/));
 
 class Product extends Component {
-
       state = {
         loading: false,
         visible: false,
@@ -65,7 +62,9 @@ class Product extends Component {
         basePrice: 0,
         taxRate: 0,
         salePrice: 0,
-        specialDiscount: 0
+        specialDiscount: 0,
+        imageUrl: '',
+        selectedFile: ''
       }
 
       showModal = () => {
@@ -88,29 +87,69 @@ class Product extends Component {
     
       handleOk = (data, id, sPrice) => {
         console.log("sPrice", sPrice);
-        const {name, description, quantity, basePrice, taxRate, specialDiscount}= data;
-        this.props.editProductMutation({
-          variables: {
-              name, 
-              description, 
-              quantity: parseInt(quantity, 10), 
-              basePrice: parseInt(basePrice,10), 
-              taxRate: parseInt(taxRate,10),
-              specialDiscount: parseInt(specialDiscount,10), 
-              salePrice: sPrice,
-              timestamps: moment().format(),
-              id
-          }
-        })
-        this.setState({ loading: true });
-        setTimeout(() => {
-          this.setState({ loading: false, visible: false });
-        }, 1000);
+        const {name, description, quantity, basePrice, taxRate, specialDiscount, selectedFile, imageUrl}= data;
+
+        if(imageUrl){
+          let formData = new FormData();
+          formData.append('myImage', selectedFile);
+          axios.post('http://localhost:5000/upload', formData)
+            .then(res => {
+              return res.data.split("/")[1];
+            })
+            .then(res => {
+              this.props.editProductMutation({
+                variables: {
+                    name, 
+                    description, 
+                    imageUrl: res,
+                    quantity: parseInt(quantity, 10), 
+                    basePrice: parseInt(basePrice,10), 
+                    taxRate: parseInt(taxRate,10),
+                    specialDiscount: parseInt(specialDiscount,10), 
+                    salePrice: sPrice,
+                    timestamps: moment().format(),
+                    id
+                }
+              })
+              this.setState({ loading: true });
+              setTimeout(() => {
+                this.setState({ loading: false, visible: false });
+              }, 1000);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }else{
+          this.props.editProductMutation({
+            variables: {
+                name, 
+                description, 
+                quantity: parseInt(quantity, 10), 
+                basePrice: parseInt(basePrice,10), 
+                taxRate: parseInt(taxRate,10),
+                specialDiscount: parseInt(specialDiscount,10), 
+                salePrice: sPrice,
+                timestamps: moment().format(),
+                id
+            }
+          })
+          this.setState({ loading: true });
+          setTimeout(() => {
+            this.setState({ loading: false, visible: false });
+          }, 1000);
+        }
       }
-    
+
       handleCancel = () => {
         this.setState({ visible: false });
       }
+
+      imageChange = (event) => {
+        this.setState({ 
+            imageUrl: event.target.value,
+            selectedFile: event.target.files[0]
+        });
+    }  
 
     render() {
 
@@ -186,33 +225,39 @@ class Product extends Component {
                         </Button>,
                     ]}
                     >
-                    <Form.Item label="Name">
-                        <Input value={this.state.name}  onChange={(event)=>{
-                          this.setState({name: event.target.value}); }}/>
-                    </Form.Item>
-                    <Form.Item label="Description">
-                        <Input value={this.state.description} onChange={(event)=>{
-                          this.setState({description: event.target.value}); }} />
-                    </Form.Item>
-                    <Form.Item label="Quantity">
-                        <Input value={this.state.quantity} onChange={(event)=>{
-                          this.setState({quantity: event.target.value}); }}/>
-                    </Form.Item>
-                    <Form.Item label="Base Price">
-                        <Input value={this.state.basePrice} onChange={(event)=>{
-                          this.setState({basePrice: event.target.value}); }} />
-                    </Form.Item>
-                    <Form.Item label="Special Discount">
-                        <Input value={this.state.specialDiscount} onChange={(event)=>{
-                          this.setState({specialDiscount: event.target.value}); }} />
-                    </Form.Item>
-                    <Form.Item label="Tax Rate">
-                        <Input value={this.state.taxRate} onChange={(event)=>{
-                          this.setState({taxRate: event.target.value}); }} />
-                    </Form.Item>
-                    <Form.Item label="Sale Price">
-                        <Input value={sPrice} />
-                    </Form.Item>
+                    <Form enctype="multipart/form-data">
+                      <Form.Item label="Name">
+                          <Input value={this.state.name}  onChange={(event)=>{
+                            this.setState({name: event.target.value}); }}/>
+                      </Form.Item>
+                      <Form.Item label="Description">
+                          <Input value={this.state.description} onChange={(event)=>{
+                            this.setState({description: event.target.value}); }} />
+                      </Form.Item>
+                      <Form.Item label="Image Url">
+                        <input type="file" name="myImage" value={this.state.imageUrl} 
+                          onChange={(e) => this.imageChange(e)} />
+                      </Form.Item>
+                      <Form.Item label="Quantity">
+                          <Input value={this.state.quantity} onChange={(event)=>{
+                            this.setState({quantity: event.target.value}); }}/>
+                      </Form.Item>
+                      <Form.Item label="Base Price">
+                          <Input value={this.state.basePrice} onChange={(event)=>{
+                            this.setState({basePrice: event.target.value}); }} />
+                      </Form.Item>
+                      <Form.Item label="Special Discount">
+                          <Input value={this.state.specialDiscount} onChange={(event)=>{
+                            this.setState({specialDiscount: event.target.value}); }} />
+                      </Form.Item>
+                      <Form.Item label="Tax Rate">
+                          <Input value={this.state.taxRate} onChange={(event)=>{
+                            this.setState({taxRate: event.target.value}); }} />
+                      </Form.Item>
+                      <Form.Item label="Sale Price">
+                          <Input value={sPrice} />
+                      </Form.Item>
+                    </Form>
                 </Modal>
             </div>
       );
@@ -222,8 +267,9 @@ class Product extends Component {
   const editProduct = gql`
   mutation EditProductMutation(
       $id: ID!
-      $name: String!, 
+      $name: String!
       $description: String!
+      $imageUrl: String
       $quantity: Int!
       $basePrice: Float!
       $taxRate: Float!
@@ -233,6 +279,7 @@ class Product extends Component {
     updateProduct(data: {
       name: $name,
       description: $description,
+      imageUrl: $imageUrl,
       quantity: $quantity,
       basePrice: $basePrice,
       taxRate: $taxRate,
@@ -243,6 +290,7 @@ class Product extends Component {
       id,
       basePrice,  
       name, 
+      imageUrl,
       quantity,
       description,
       salePrice, 
