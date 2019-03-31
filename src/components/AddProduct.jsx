@@ -129,10 +129,11 @@ class AddProduct extends Component {
     }
 
     render() {
-
-        var tax = (this.state.basePrice * (this.state.taxRate/100)) > 0 ? 
-            (this.state.basePrice * (this.state.taxRate/100)) : 0;
-        var sPrice = (this.state.basePrice + tax) - ((this.state.basePrice + tax) * (this.state.specialDiscount/100));
+      const basePriceInt = parseInt(this.state.basePrice, 10);
+      const tax = (basePriceInt * this.state.taxRate / 100) > 0 ? 
+          (basePriceInt * this.state.taxRate / 100) : 0;
+      const sPrice = isNaN((basePriceInt + tax) - ((basePriceInt + tax) * (this.state.specialDiscount/100))) ? 
+                        0 : (basePriceInt + tax) - ((basePriceInt + tax) * (this.state.specialDiscount/100));
         
         return (
             <Form className="login-form addProduct" enctype="multipart/form-data">
