@@ -152,12 +152,14 @@ class Product extends Component {
     }  
 
     render() {
-
         const { visible, loading } = this.state;
-        var tax = (this.state.basePrice * (this.state.taxRate/100)) > 0 ? 
-            (this.state.basePrice * (this.state.taxRate/100)) : 0;
-        var sPrice = (this.state.basePrice + tax) - ((this.state.basePrice + tax) * (this.state.specialDiscount/100));
 
+        const basePriceInt = parseInt(this.state.basePrice, 10);
+        const tax = (basePriceInt * this.state.taxRate / 100) > 0 ? 
+            (basePriceInt * this.state.taxRate / 100) : 0;
+        const sPrice = isNaN((basePriceInt + tax) - ((basePriceInt + tax) * (this.state.specialDiscount/100))) ? 
+                          0 : (basePriceInt + tax) - ((basePriceInt + tax) * (this.state.specialDiscount/100));
+                          
         const { id,
                 basePrice, 
                 creator, 
@@ -172,7 +174,7 @@ class Product extends Component {
         let renderHtml = <p>Price: {salePrice.toFixed(2)}€</p>
         
         if(specialDiscount > 0){
-            renderHtml = <p>Price: <span className="basePrice">{basePrice}€</span> <span className="salePrice">{salePrice.toFixed(2)}€</span></p>
+            renderHtml = <p>Price: <span className="basePrice">({basePrice}€)</span> <span className="salePrice">{salePrice.toFixed(2)}€</span></p>
         }
 
         var imageSrc = "";
